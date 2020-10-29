@@ -21,7 +21,7 @@ create index shipmentid_ix
 --------------
 --formatting should be col1=shipmentid, col2=dest_code, col3=stop_num, col4=arrive.  Remove all rows where arrive is blank.
 --save sams sheet after formatting to this path
-.import 'C:\Mitchell\sqlite\Data\arrivals_no_headers.csv' arrivals;
+.import 'C:\Mitchell\sqlite\Data\arrivals_no_headers.csv' arrivals
 
 ------------------
 
@@ -36,7 +36,7 @@ update orderlevel
 							where arrivals.shipment_id = orderlevel.shipmentid
 							and arrivals.dest_code = orderlevel.destcode
 							and arrivals.stop_num = orderlevel.stop_num
-							and arrivals.stop_num > 1)
+							and arrivals.stop_num > 1),
 							--this looks only for the delivery stops
 		ActualShipDate = (select arrivals.arrive
 			--this ActualShipDate in Orderlevel naming convetion will be updated soon to pickup_arrive
@@ -76,7 +76,7 @@ create index shipmentid_ix
 --------------
 --formatting should be col1=shipmentid, col2=dest_code, col3=stop_num, col4=arrive.  Remove all rows where arrive is blank.
 --save sams sheet after formatting to this path
-.import 'C:\Mitchell\sqlite\Data\depart_no_headers.csv' departs;
+.import 'C:\Mitchell\sqlite\Data\depart_no_headers.csv' departs
 
 ----------------
 
@@ -89,7 +89,7 @@ update orderlevel
 							where departs.shipment_id = orderlevel.shipmentid
 							and departs.dest_code = orderlevel.destcode
 							and departs.stop_num = orderlevel.stop_num
-							and departs.stop_num > 1)
+							and departs.stop_num > 1),
 							--this looks only for the delivery stops
 
 		actual_ship_depart = (select departs.depart
