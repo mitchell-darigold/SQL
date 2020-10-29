@@ -13,12 +13,19 @@ create table arrivals(
 	stop_num integer,
 	arrive timestamp);
 
+-----------------
+
+create index shipmentid_ix
+	on arrivals (shipment_id);
+
 --------------
 --formatting should be col1=shipmentid, col2=dest_code, col3=stop_num, col4=arrive.  Remove all rows where arrive is blank.
 --save sams sheet after formatting to this path
 .import 'C:\Mitchell\sqlite\Data\arrivals_no_headers.csv' arrivals;
 
 ------------------
+
+--*******************************************i ran the update only for ActualDelivDate on 10/29/20 i still need to do the ActualShipDate
 
 update orderlevel
 	set
@@ -62,7 +69,10 @@ create table departs(
 	dest_code text,
 	stop_num integer,
 	depart timestamp);
+---------------
 
+create index shipmentid_ix
+	on departs (shipment_id);
 --------------
 --formatting should be col1=shipmentid, col2=dest_code, col3=stop_num, col4=arrive.  Remove all rows where arrive is blank.
 --save sams sheet after formatting to this path
