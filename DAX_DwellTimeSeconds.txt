@@ -1,0 +1,93 @@
+DwellTimeSeconds = datediff(StopLevel[ActualArrive],StopLevel[ActualDepart],SECOND)
+
+------------
+
+DwellDurationHHMMSS = 
+// Duration formatting 
+// * @konstatinos 1/25/2016
+// * Given a number of seconds, returns a format of "hh:mm:ss"
+//
+// We start with a duration in number of seconds
+VAR Duration = StopLevel[DwellTimeSeconds]
+// There are 3,600 seconds in an hour
+VAR Hours =
+    INT ( Duration / 3600)
+// There are 60 seconds in a minute
+VAR Minutes =
+    INT ( MOD( Duration - ( Hours * 3600 ),3600 ) / 60)
+// Remaining seconds are the remainder of the seconds divided by 60 after subtracting out the hours 
+VAR Seconds =
+    ROUNDUP(MOD ( MOD( Duration - ( Hours * 3600 ),3600 ), 60 ),0) // We round up here to get a whole number
+// These intermediate variables ensure that we have leading zero's concatenated onto single digits
+// Hours with leading zeros
+VAR H =
+    IF ( LEN ( Hours ) = 1, 
+        CONCATENATE ( "0", Hours ),
+        CONCATENATE ( "", Hours )
+      )
+// Minutes with leading zeros
+VAR M =
+    IF (
+        LEN ( Minutes ) = 1,
+        CONCATENATE ( "0", Minutes ),
+        CONCATENATE ( "", Minutes )
+    )
+// Seconds with leading zeros
+VAR S =
+    IF (
+        LEN ( Seconds ) = 1,
+        CONCATENATE ( "0", Seconds ),
+        CONCATENATE ( "", Seconds )
+    )
+// Now return hours, minutes and seconds with leading zeros in the proper format "hh:mm:ss"
+RETURN
+    CONCATENATE (
+        H,
+        CONCATENATE ( ":", CONCATENATE ( M, CONCATENATE ( ":", S ) ) )
+    )
+
+----------------------
+
+AvgDwellDurationHHMMSS = 
+// Duration formatting 
+// * @konstatinos 1/25/2016
+// * Given a number of seconds, returns a format of "hh:mm:ss"
+//
+// We start with a duration in number of seconds
+VAR Duration = AVERAGE(StopLevel[DwellTimeSeconds])
+// There are 3,600 seconds in an hour
+VAR Hours =
+    INT ( Duration / 3600)
+// There are 60 seconds in a minute
+VAR Minutes =
+    INT ( MOD( Duration - ( Hours * 3600 ),3600 ) / 60)
+// Remaining seconds are the remainder of the seconds divided by 60 after subtracting out the hours 
+VAR Seconds =
+    ROUNDUP(MOD ( MOD( Duration - ( Hours * 3600 ),3600 ), 60 ),0) // We round up here to get a whole number
+// These intermediate variables ensure that we have leading zero's concatenated onto single digits
+// Hours with leading zeros
+VAR H =
+    IF ( LEN ( Hours ) = 1, 
+        CONCATENATE ( "0", Hours ),
+        CONCATENATE ( "", Hours )
+      )
+// Minutes with leading zeros
+VAR M =
+    IF (
+        LEN ( Minutes ) = 1,
+        CONCATENATE ( "0", Minutes ),
+        CONCATENATE ( "", Minutes )
+    )
+// Seconds with leading zeros
+VAR S =
+    IF (
+        LEN ( Seconds ) = 1,
+        CONCATENATE ( "0", Seconds ),
+        CONCATENATE ( "", Seconds )
+    )
+// Now return hours, minutes and seconds with leading zeros in the proper format "hh:mm:ss"
+RETURN
+    CONCATENATE (
+        H,
+        CONCATENATE ( ":", CONCATENATE ( M, CONCATENATE ( ":", S ) ) )
+    )
