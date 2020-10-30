@@ -29,8 +29,7 @@ create index shipmentid_ix
 
 update orderlevel
 	set
-		ActualDelivDate = (select arrivals.arrive
-			--this ActualDelivDate in OrderLevel naming convetion will be updated soon to delivery_arrive
+		DeliveryArrive = (select arrivals.arrive
 			--this is geofence entry - actualarrive in sams sheet
 							from arrivals
 							where arrivals.shipment_id = orderlevel.shipmentid
@@ -38,15 +37,13 @@ update orderlevel
 							and arrivals.stop_num = orderlevel.stop_num
 							and arrivals.stop_num > 1),
 							--this looks only for the delivery stops
-		ActualShipDate = (select arrivals.arrive
-			--this ActualShipDate in Orderlevel naming convetion will be updated soon to pickup_arrive
+		PickupArrive = (select arrivals.arrive
 			--this is the geofence entry - actual arrive in sams sheet
 							from arrivals
 							where arrivals.shipment_id = orderlevel.shipmentid
-							and arrivals.dest_code = orderlevel.destcode
-							and arrivals.stop_num = orderlevel.stop_num
 							and arrivals.stop_num = 1)
 							--this looks only for the pickup stops
+							--we want to apply this date to all rows for a shipment
 	where
 		exists (
 			select *
@@ -82,8 +79,7 @@ create index shipmentid_ix
 
 update orderlevel
 	set
-		actual_deliv_depart = (select departs.depart
-			--this actual_deliv_depart in Orderlevel naming convetion will be updated soon to delivery_depart
+		DeliveryDepart = (select departs.depart
 			--this is the geofence exit - actual depart in sams sheet
 							from departs
 							where departs.shipment_id = orderlevel.shipmentid
@@ -92,15 +88,13 @@ update orderlevel
 							and departs.stop_num > 1),
 							--this looks only for the delivery stops
 
-		actual_ship_depart = (select departs.depart
-			--this actual_ship_depart in Orderlevel naming convetion will be updated soon to pickup_depart
+		PickupDepart = (select departs.depart
 			--this is the geofence exit - actual depart in sams sheet
 							from departs
 							where departs.shipment_id = orderlevel.shipmentid
-							and departs.dest_code = orderlevel.destcode
-							and departs.stop_num = orderlevel.stop_num
-							and departs.stop_num = 1)
+							and departs.stop_num = 1)			
 							--this looks only for the pickup stops
+							--we want to apply this date to all rows for a shipment
 where
 	exists (
 		select *
