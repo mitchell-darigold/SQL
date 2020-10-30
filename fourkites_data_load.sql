@@ -15,7 +15,7 @@ create table arrivals(
 
 -----------------
 
-create index shipmentid_ix
+create index shipmentidarrive_ix
 	on arrivals (shipment_id);
 
 --------------
@@ -68,7 +68,7 @@ create table departs(
 	depart timestamp);
 ---------------
 
-create index shipmentid_ix
+create index shipmentiddepart_ix
 	on departs (shipment_id);
 --------------
 --formatting should be col1=shipmentid, col2=dest_code, col3=stop_num, col4=arrive.  Remove all rows where arrive is blank.
