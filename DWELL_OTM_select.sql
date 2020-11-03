@@ -172,6 +172,6 @@ LEFT JOIN (
 ------------------
 --this table creates a distinct row table of descriptive values that attach *:1 (stoplevelunion:descriptive_table).
 --the descritpive table will join on shipmentid, orderid, src
---write a statement for the descriptive columns which is unique to the orderlevel/destcode
+--write a statement for the descriptive columns which is unique to the orderlevel/destcodes
 
 --write a MC__ticket statment to gather the data to the orderlevel i think, i need to investigate more.  so i can join it to the union above
