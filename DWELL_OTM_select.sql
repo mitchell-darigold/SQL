@@ -3,8 +3,8 @@ SELECT DISTINCT
 	shipmentid
 	,orderid
 	,substr(driverid, 5, 10)
-	,actualshipdate as arrive
-	,actual_ship_depart as depart
+	,pickuparrive as arrive
+	,pickupdepart as depart
 	,srccode
 	,case when srccode is not null
 		then srccode
@@ -32,8 +32,8 @@ SELECT DISTINCT
 	shipmentid
 	,orderid
 	,substr(driverid, 5, 10)
-	,actualdelivdate as arrive
-	,actual_deliv_depart as depart
+	,deliveryarrive as arrive
+	,deliverydepart as depart
 	,srccode
 	,destcode
 	,case when shipmentid is not null
@@ -82,3 +82,10 @@ WHERE
 --this overall query works pretty good once a standard shipment with pickup as stop 1 and nfr as the last stop
 --the stop number feels a little wonky even though its correct.  There are 4 stops on the the three orders in the shipment each have 3 stops.  The delivery stop for 2 of the orders is the same which gets labeled as the second stop (correctly)
 --for the 3rd order it has a different delivery stop which is labeled as the 3rd stop (correctly).  Then there is a 4th stop for all orders which is the NFR stop.  Since this is to the shipment granularity
+
+--write a statement for the descriptive columns which is unique to the orderlevel/destcode
+ 	--that means pickup and nfr wont get those descriptive columns because we wont have a dest code in orderlevel to match the destcode in the union aobve for those stops
+
+--write a MC__ticket statment to gather the data to the orderlevel i think, i need to investigate more.  so i can join it to the union above
+
+--write an employee time detail statement to connect it to the union above.
