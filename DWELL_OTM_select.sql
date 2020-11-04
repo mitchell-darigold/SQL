@@ -21,6 +21,8 @@ WITH stop_union as (
 			) as adj_stopnum
 	FROM (
 		SELECT DISTINCT
+		--Im realizing this might not work.  There are orders that have 2 pickup location
+		--what does this mean for my code? What will happen?
 			shipmentid
 			,orderid
 			,substr(driverid, 5, 10) as driverid
@@ -41,9 +43,10 @@ WITH stop_union as (
 				--what happens when the NFR is the first stop and the pickup is the second? Thats why i added the adj_stopnum
 		FROM
 			orderlevel
-		--remove this where, only for testing 
+		--remove this shipmentid where, only for testing 
 		WHERE
-			shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+			ordertype = 'Sales'
+			and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 
 		UNION ALL
 
@@ -63,9 +66,10 @@ WITH stop_union as (
 			,stop_num as stopnum
 		FROM
 			orderlevel
-		--remove this where, only for testing 
+		--remove this shipmentid where, only for testing 
 		WHERE
-			shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+			ordertype = 'Sales'
+			and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 
 		UNION ALL
 
@@ -92,9 +96,10 @@ WITH stop_union as (
 			) ol
 			on sl.shipmentid = ol.shipmentid
 
-		--remove this where, only for testing and because we dont have the stoplevel_nfr table yet
+		--remove this shipmentid where, only for testing 
 		WHERE
-			sl.shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+			ordertype = 'Sales'
+			and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 	)
 )
 
@@ -109,7 +114,7 @@ SELECT
 	,s.destcode
 	,s.stoptype
 	,s.stopnum
-	,s.--put the adj in the with
+	,s.adj_stopnum
 	,pi.punchin
 	,po.punchout
 FROM

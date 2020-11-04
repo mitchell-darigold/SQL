@@ -36,12 +36,16 @@ SELECT DISTINCT
 		and shipmentid is not null
 		then 'D'
 		end
+	,case when stop_num is null 
+			then 2
+			else stop_num
+			end as stopnum
 FROM
 	orderlevel
 
 WHERE
 	ordertype = 'Sales'
-	and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+	and date(starttime) > '2019-08-01'
 
 UNION ALL
 --pickup
@@ -82,11 +86,14 @@ SELECT DISTINCT
 		and shipmentid is not null
 		then 'P'
 		end
+	,case when shipmentid is not null
+		then 1
+		end as stopnum
 FROM
 	orderlevel
 WHERE
 	ordertype = 'Sales'
-	and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+	and date(starttime) > '2019-08-01'
 
 UNION ALL
 --nfr
@@ -105,14 +112,14 @@ SELECT DISTINCT
 	,nfr.srcname
 	,nfr.srccity
 	,nfr.srcstate
-	,nfr.srccountry
+	,0
 	,nfr.srczip
 	,0
 	,0
 	,nfr.destname
 	,nfr.destcity
 	,nfr.deststate
-	,nfr.destcountry
+	,0
 	,nfr.destzip
 	,0
 	,0
@@ -124,21 +131,23 @@ SELECT DISTINCT
 	,ol.linehaul
 	,ol.totcost
 	,nfr.stoptype
+	,nfr.stopnum
 
 FROM
 	orderlevel ol
-WHERE
-	ordertype = 'Sales'
-	and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 
-INNER JOIN stoplevel_nfr nfr
+JOIN stoplevel_nfr nfr
 	on ol.orderid = nfr.orderids
 	and ol.shipmentid = nfr.shipmentid
 
+WHERE
+	ol.ordertype = 'Sales'
+	and date(ol.starttime) > '2019-08-01'
 
 
 
 
 	--union all three together create a stop type field set as p or d or nfr
-	--in powerbi join on orderid, shipmentid, destcode, srccode and stoptype
+	--in powerbi join on orderid, shipmentid, destcode, srccode and stoptype and stopnum
 	--will that result in cartesian? I want it to be 1:1
+	--at this moment 11/4/20 9:50am i think it will be 1:1
