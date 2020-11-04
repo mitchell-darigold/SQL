@@ -1,0 +1,16 @@
+database=\\dhqshareddata\data\supply_chain\analytics\data\power_bi_data.db;dsn=SQLite3 Datasource
+
+database=\\dhqshareddata\data\supply_chain\analytics\data\power_bi_data.db;dsn=SQLite3 Datasource
+
+database=\\C:\Mitchell\Recovery\power_bi_data.db
+
+\\dhqshareddata\data\Supply_Chain\Analytics_and_CI\Dashboards\DGOTIF\Customer_Delivery_Windows_v2.xlsx
+
+\\dhqshareddata\data\Supply_Chain\Analytics\Data\FuelAndMilesByMonth.xlsx
+
+\\dhqshareddata\data\Supply_Chain\Analytics\Data\CorpGroups.xlsx
+
+
+recoery key for onprem data gateway (now uninstalled) DHQSQL01
+
+database=\\S:\Supply_Chain\Analytics\Data\power_bi_data.db;dsn=SQLite3 Datasource
