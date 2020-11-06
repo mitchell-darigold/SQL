@@ -16,7 +16,7 @@ WITH stop_union as (
 		,destcode
 		,stoptype
 		,stopnum
-		,row_number() over (
+		,row_number() over (  --when stopnum is blank its putting that stop at the top.  Blank delivery stopnum puts it first
 			partition by orderid order by stopnum asc, stoptype asc
 			) as adj_stopnum
 	FROM (
@@ -46,7 +46,8 @@ WITH stop_union as (
 		--remove this shipmentid where, only for testing 
 		WHERE
 			ordertype = 'Sales'
-			and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+			and date(starttime) > '2019-08-01'
+			--and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 
 		UNION ALL
 
@@ -63,13 +64,19 @@ WITH stop_union as (
 				and orderid is not null
 				then 'D'
 				end as stoptype
-			,stop_num as stopnum
+			,case when stop_num is null 
+				then 2
+				else stop_num
+				end as stopnum
+				--when there are multi deliveries with a blank stopnum they will both get two
+				--when they get te adj stop num they may or may not get the correct number
 		FROM
 			orderlevel
 		--remove this shipmentid where, only for testing 
 		WHERE
 			ordertype = 'Sales'
-			and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+			and date(starttime) > '2019-08-01'
+			--and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 
 		UNION ALL
 
@@ -99,7 +106,8 @@ WITH stop_union as (
 		--remove this shipmentid where, only for testing 
 		WHERE
 			ordertype = 'Sales'
-			and shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
+			and date(starttime) > '2019-08-01'
+			--and sl.shipmentid in (1034113, 368652, 431806, 234538, 93221, 1387282, 1425286, 1509321)
 	)
 )
 
