@@ -1,0 +1,69 @@
+DateTable = 
+VAR BaseCalendar = CALENDAR( 
+            FIRSTDATE(stop_union[arrive]),
+            LASTDATE(stop_union[arrive])
+        )
+RETURN
+    GENERATE(
+        BaseCalendar,
+        VAR BaseDate = [Date]
+        VAR WkNum = WEEKNUM( BaseDate, 2 )
+        VAR MonthNum = MONTH( BaseDate )
+        VAR MonthName = FORMAT( BaseDate, "MMM" )
+        VAR Year = YEAR( BaseDate )
+        VAR Fy = IF( 
+            MonthNum >= [FyStartMonth], 
+            Year + 1, 
+            Year 
+            )
+        RETURN ROW(
+            "FY", Fy,
+            "FyMonthNum", IF( 
+                MonthNum >= [FyStartMonth], 
+                MonthNum - ( [FyStartMonth] - 1 ), 
+                12 + ( MonthNum - ( [FyStartMonth] - 1 ) ) 
+                ),
+            "Quarter", SWITCH(
+                TRUE(),
+                MonthNum IN {4, 5, 6}, "Q1",
+                MonthNum IN {7, 8, 9}, "Q2",
+                MonthNum IN {10, 11, 12}, "Q3",
+                MonthNum IN {1, 2, 3}, "Q4"
+            ),
+            "Year", Year,
+            "Month", MonthName,
+            "WeekNum", WkNum,
+            "WeekStartDate", BaseDate - WEEKDAY( BaseDate, 2 ) + 1,
+            "Day", DAY( BaseDate ),
+            "YrMonth", Year & MonthNum,
+            "YrMonthName", MonthName & " '" & RIGHT( Year, 2),
+            "IsCurrentFY", IF(
+                Fy = [CurrentFy],
+                1,
+                0
+            ),
+            "IsPreviousFY", IF(
+                Fy = [CurrentFy] - 1,
+                1,
+                0
+            ),
+            "IsBeforeAsOf", IF(
+                BaseDate <= [AsOfDate],
+                1,
+                0
+            ),
+            "IsInLastTwoFys", IF(
+                Fy >= [CurrentFy] - 1,
+                1,
+                0
+            ),
+            "IsPriorWk", IF(
+                AND( 
+                    Year = [CurrentYear],
+                    WkNum = [CurrentWk] - 1
+                ),
+                1,
+                0
+            )
+        )
+    )
