@@ -2,7 +2,7 @@ database=\\dhqshareddata\data\supply_chain\analytics\data\power_bi_data.db;dsn=S
 
 database=\\dhqshareddata\data\supply_chain\analytics\data\power_bi_data.db;dsn=SQLite3 Datasource
 
-database=\\C:\Mitchell\Recovery\power_bi_data.db
+database=C:\Mitchell\Recovery\power_bi_data.db
 
 \\dhqshareddata\data\Supply_Chain\Analytics_and_CI\Dashboards\DGOTIF\Customer_Delivery_Windows_v2.xlsx
 
